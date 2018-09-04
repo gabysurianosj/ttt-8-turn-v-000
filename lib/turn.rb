@@ -1,3 +1,4 @@
+#displays a tic tac toe board, with board spaces passed as an array
 def display_board(board)
   puts " #{board[0]} | #{board[1]} | #{board[2]} "
   puts "-----------"
@@ -6,32 +7,53 @@ def display_board(board)
   puts " #{board[6]} | #{board[7]} | #{board[8]} "
 end
 
-def input_to_index(input)
-  input.to_i - 1
-end 
-
-#if index is valid...
-def valid_move?(number_entered, board)
-  number_entered.between?(0, 8) && !(position_taken?(board, number_entered))
-end
-#if index is valid...make the move for index
-def move(array, index, name = "X")
-  array[index] = name
-end
-#if index is valid...show the board
-def position_taken?(board, answer)
-  board[answer] != " " 
+#coverts a user's place on the board to the index integer
+def input_to_index(user_input)
+  index = user_input.to_i
+  index -= 1
+  return index
 end
 
-def turn(board)
-    puts "Please enter 1-9:"
-    answer = gets.chomp
-    answer = input_to_index(answer)
-    if valid_move?(answer, board)
-      move(board, answer)
-      puts display_board(board)
+#checks the number to see if 1) the position is already taken and 2)it is an actual number
+def valid_move?(board, index)
+  def position_taken?(array, ind)
+    if array[ind] == " " || array[ind] == "" || array[ind] == nil
+      return false
     else
-      puts "That is an invalid entry!"
-      turn(board)
-    end 
+      return true
+    end
+  end
+
+  def on_board?(num)
+    if num.between?(0, 8) == true
+      return true
+    else
+      return false
+    end
+  end
+
+  if (position_taken?(board, index)) == false && (on_board?(index) == true)
+    return true
+  else
+    return false
+  end
+end
+
+#Takes a users num and the board, and places the X or O char in that position
+def move(board, index, character = "X")
+  board[index] = character
+  return board
+end
+
+#Asks user for a number, check if it is valid, and if it's not, recursively continues to ask for a number
+def turn (board)
+  puts "Please enter 1-9:"
+  num = gets.chomp
+  index = input_to_index(num)
+  if valid_move?(board, index) == true
+    move(board, index)
+    display_board(board)
+  else
+    turn(board)
+  end
 end
