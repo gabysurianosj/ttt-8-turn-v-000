@@ -6,13 +6,13 @@ def display_board(board)
   puts " #{board[6]} | #{board[7]} | #{board[8]} "
 end
 
-def input_to_index(number_entered)
-  number_entered.to_i - 1
+def input_to_index(input)
+  input.to_i - 1
 end 
 
 #if index is valid...
-def valid_move?(board, number_entered)
-  !(position_taken?(board, number_entered)) && number_entered.between?(0, 8) 
+def valid_move?(number_entered, board)
+  number_entered.between?(0, 8) && !(position_taken?(board, number_entered))
 end
 #if index is valid...make the move for index
 def move(array, index, name = "X")
